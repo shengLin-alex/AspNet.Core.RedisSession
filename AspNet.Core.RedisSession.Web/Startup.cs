@@ -46,7 +46,11 @@ namespace AspNet.Core.RedisSession.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(config =>
+            {
+                // set global filter.
+                config.Filters.Add(new SessionAuthAttribute());
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             
             // Cookie based Auth setting
             double loginExpireMinute = this.Configuration.GetValue<double>("LoginExpireMinute");

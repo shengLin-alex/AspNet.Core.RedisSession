@@ -1,22 +1,22 @@
-using System.Reflection;
 using Autofac;
-using Power.Mvc.Helper;
 using Power.Mvc.Helper.Extensions;
+using Power.Mvc.Helper;
+using System.Reflection;
 
 namespace AspNet.Core.RedisSession.Repository
 {
     /// <summary>
-    /// 類別註冊
+    /// Type register
     /// </summary>
     public class AutofacTypeRegister : ITypeRegister
     {
         /// <summary>
-        /// 註冊順序
+        /// register order
         /// </summary>
         public int Seq => 3;
 
         /// <summary>
-        /// 註冊類別
+        /// register types
         /// </summary>
         /// <param name="builder">ContainerBuilder</param>
         public void RegisterTypes(ContainerBuilder builder)

@@ -1,10 +1,13 @@
-using AspNet.Core.RedisSession.Service;
 using AspNet.Core.RedisSession.Public.Models;
+using AspNet.Core.RedisSession.Service;
 using Microsoft.AspNetCore.Http;
 using Power.Mvc.Helper;
 
 namespace AspNet.Core.RedisSession.Web
 {
+    /// <summary>
+    /// current user context
+    /// </summary>
     public class UserContext : IUserContext<UserInfo>
     {
         private readonly IHttpContextAccessor HttpContextAccessor;

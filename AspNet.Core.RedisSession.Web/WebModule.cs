@@ -1,8 +1,8 @@
-using System;
 using AspNet.Core.RedisSession.Public.Models;
 using Autofac;
-using Power.Mvc.Helper;
 using Power.Mvc.Helper.Extensions;
+using Power.Mvc.Helper;
+using System;
 
 namespace AspNet.Core.RedisSession.Web
 {

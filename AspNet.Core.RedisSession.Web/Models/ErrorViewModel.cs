@@ -1,5 +1,3 @@
-using System;
-
 namespace AspNet.Core.RedisSession.Web.Models
 {
     public class ErrorViewModel

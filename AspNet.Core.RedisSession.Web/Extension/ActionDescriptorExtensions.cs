@@ -1,7 +1,7 @@
-using System.Linq;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Linq;
 
 namespace AspNet.Core.RedisSession.Web
 {

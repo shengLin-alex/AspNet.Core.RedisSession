@@ -10,7 +10,7 @@ namespace AspNet.Core.RedisSession.Repository
     public class PostgreSqlDbContext : PostgreSqlDbContextBase
     {
         /// <summary>
-        /// 建構子
+        /// constructor
         /// </summary>
         /// <param name="connectionString">連線字串</param>
         public PostgreSqlDbContext(string connectionString) : base(connectionString)
@@ -18,7 +18,7 @@ namespace AspNet.Core.RedisSession.Repository
         }
 
         /// <summary>
-        /// TestEntity 資料集
+        /// dbset for user table
         /// </summary>
         public DbSet<User> UserEntity { get; set; }
 

@@ -1,10 +1,15 @@
 ﻿using AspNet.Core.RedisSession.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Power.Mvc.Helper;
 using Power.Mvc.Helper.Extensions;
+using Power.Mvc.Helper;
 
-namespace AspNetCore.Core.RedisSession.Web.Controllers
+namespace AspNet.Core.RedisSession.Web.Controllers
 {
+    /// <summary>
+    /// Test controller for test api
+    /// </summary>
+    [AllowAnonymous]
     public class TestController : Controller
     {
         private readonly IUserRepository UserRepo;

@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  postgres-docker:
+    image: postgres
+    container_name: DockerPostgres
+    volumes:
+      - ${POSTGRES_HOST_DIR}:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+  redis-docker:
+    image: redis
+    container_name: DockerRedis
+    command: redis-server --requirepass localredisadmin
+    ports:
+      - "${REDIS_PORT}:6379"
+    volumes:
+      - ${REDIS_HOST_DIR}:/data

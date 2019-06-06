@@ -1,0 +1,12 @@
+{
+  "modules": [
+    {
+      "type": "AspNet.Core.RedisSession.Web.WebModule, AspNet.Core.RedisSession.Web",
+      "properties": {
+        "SettingHelper": "Power.Mvc.Helper.SettingHelper, Power.Mvc.Helper",
+        "CacheHelper": "Power.Mvc.Helper.RedisCacheHelper, Power.Mvc.Helper",
+        "UserContext": "AspNet.Core.RedisSession.Web.UserContext, AspNet.Core.RedisSession.Web"
+      }
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AspNet.Core.RedisSession.Public\AspNet.Core.RedisSession.Public.csproj" />
+      <ProjectReference Include="..\AspNet.Core.RedisSession.Repository\AspNet.Core.RedisSession.Repository.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+      <PackageReference Include="PowerHelper.Core" Version="2.2.2" />
+      <PackageReference Include="PowerReop.EFCore" Version="2.2.1" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,13 @@
+@model LoginViewModel
+
+<div class="text-center">
+    @using (Html.BeginForm("Login", "Auth"))
+    {
+        @Html.HiddenFor(m => m.ReturnUrl)
+        @Html.EditorFor(m => m.UserId, new { htmlAttributes = new { @class = "form-inline" } })
+        @Html.ValidationMessageFor(m => m.UserId)
+        @Html.EditorFor(m => m.UserPassword, new { htmlAttributes = new { @class = "form-inline", @type = "password" } })
+        @Html.ValidationMessageFor(m => m.UserPassword)
+        <button type="submit" class="form-inline">Submit</button>
+    }
+</div>

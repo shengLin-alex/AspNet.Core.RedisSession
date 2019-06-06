@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="PowerHelper.Core" Version="2.2.2" />
+      <PackageReference Include="PowerReop.EFCore" Version="2.2.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AspNet.Core.RedisSession.Public\AspNet.Core.RedisSession.Public.csproj" />
+    </ItemGroup>
+
+</Project>

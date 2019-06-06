@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <DebugType>full</DebugType>
+    </PropertyGroup>
+
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.5" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.CookiePolicy" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+        <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.0.165" />
+        <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.0.165" />
+        <PackageReference Include="PowerHelper.Core" Version="2.2.2" />
+        <PackageReference Include="PowerReop.EFCore" Version="2.2.1" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <ProjectReference Include="..\AspNet.Core.RedisSession.Public\AspNet.Core.RedisSession.Public.csproj" />
+      <ProjectReference Include="..\AspNet.Core.RedisSession.Repository\AspNet.Core.RedisSession.Repository.csproj" />
+      <ProjectReference Include="..\AspNet.Core.RedisSession.Service\AspNet.Core.RedisSession.Service.csproj" />
+    </ItemGroup>
+
+</Project>

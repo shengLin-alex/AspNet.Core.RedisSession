@@ -1,4 +1,5 @@
 ﻿using AspNet.Core.RedisSession.Web.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -8,7 +9,7 @@ namespace AspNet.Core.RedisSession.Web.Controllers
     /// <summary>
     /// Home page controller.
     /// </summary>
-    [Authorize]
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class HomeController : Controller
     {
         /// <summary>

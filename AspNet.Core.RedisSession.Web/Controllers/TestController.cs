@@ -10,6 +10,7 @@ namespace AspNet.Core.RedisSession.Web.Controllers
     /// Test controller for test api
     /// </summary>
     [AllowAnonymous]
+    [Route("api/[controller]")]
     public class TestController : Controller
     {
         private readonly IUserRepository UserRepo;
@@ -22,11 +23,13 @@ namespace AspNet.Core.RedisSession.Web.Controllers
             this.CacheHelper = cacheHelper;
         }
 
+        [HttpGet("[action]/{id}")]
         public IActionResult GetUsers(string id)
         {
             return this.Json(this.UserRepo.Get(u => u.Id == id));
         }
 
+        [HttpGet("[action]/{id}")]
         public IActionResult SetCache(string id)
         {
             return this.Json(this.CacheHelper.Get("TestCache", () => id));

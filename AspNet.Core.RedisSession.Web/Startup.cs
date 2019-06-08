@@ -5,10 +5,12 @@ using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Power.Mvc.Helper;
@@ -48,18 +50,22 @@ namespace AspNet.Core.RedisSession.Web
 
             services.AddMvc(config =>
             {
+                AuthorizationPolicy policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                
                 // set global filter.
+                config.Filters.Add(new AuthorizeFilter(policy));
                 config.Filters.Add(new SessionAuthAttribute());
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             
             // Cookie based Auth setting
             double loginExpireMinute = this.Configuration.GetValue<double>("LoginExpireMinute");
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>
-            {
-                opt.LoginPath = new PathString("/Auth/Login");
-                opt.LogoutPath = new PathString("/Auth/Logout");
-                opt.ExpireTimeSpan = TimeSpan.FromMinutes(loginExpireMinute);
-            });
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                    .AddCookie(opt =>
+                    {
+                        opt.LoginPath = new PathString("/Auth/Login");
+                        opt.LogoutPath = new PathString("/Auth/Logout");
+                        opt.ExpireTimeSpan = TimeSpan.FromMinutes(loginExpireMinute);
+                    });
 
             // session setting
             services.AddDistributedMemoryCache();

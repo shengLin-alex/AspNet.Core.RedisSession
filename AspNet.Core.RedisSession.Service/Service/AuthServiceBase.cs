@@ -157,7 +157,7 @@ namespace AspNet.Core.RedisSession.Service
         /// </summary>
         /// <param name="user"></param>
         /// <returns>Task for sign in user</returns>
-        protected async Task UserLogin(UserInfo user)
+        protected virtual async Task UserLogin(UserInfo user)
         {
             Claim[] claims = { new Claim( "UserId",user.UserId) };
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims , CookieAuthenticationDefaults.AuthenticationScheme);

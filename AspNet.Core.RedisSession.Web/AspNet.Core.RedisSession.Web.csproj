@@ -1,23 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
         <DebugType>full</DebugType>
+        <LangVersion>9</LangVersion>
     </PropertyGroup>
 
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.6" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.CookiePolicy" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-        <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.0.180" />
-        <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.0.180" />
-        <PackageReference Include="PowerHelper.Core" Version="2.2.2" />
-        <PackageReference Include="PowerReop.EFCore" Version="2.2.1" />
+        <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.1.0" />
+        <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.1.0" />
+        <PackageReference Include="PowerHelper.Core" Version="5.0.2" />
+        <PackageReference Include="PowerReop.EFCore" Version="5.0.0" />
     </ItemGroup>
 
 

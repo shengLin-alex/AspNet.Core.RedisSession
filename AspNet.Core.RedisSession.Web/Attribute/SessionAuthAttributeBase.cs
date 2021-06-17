@@ -1,5 +1,5 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Power.Mvc.Helper.Extensions;
 using Power.Mvc.Helper;
@@ -39,7 +39,9 @@ namespace AspNet.Core.RedisSession.Web
             }
 
             // check if action decorated by AllowAnonymousFilter
-            if (!filterContext.ActionDescriptor.IsDefined<AllowAnonymousFilter>() && !filterContext.ActionDescriptor.IsControllerDefined<AllowAnonymousFilter>())
+            if (/*!filterContext.ActionDescriptor.IsDefined<AllowAnonymousFilter>() &&
+                !filterContext.ActionDescriptor.IsControllerDefined<AllowAnonymousFilter>()*/
+                filterContext.HttpContext.GetEndpoint()?.Metadata.GetMetadata<IAllowAnonymous>() == null)
             {
                 // get session id in cache
                 string cacheSessionId = cacheHelper.Get<string>(this.SessionIdCacheKey);
@@ -50,7 +52,7 @@ namespace AspNet.Core.RedisSession.Web
                 else
                 {
                     cacheSessionId = cacheSessionId.Replace(@"""", string.Empty);
-                    string currentSessionId = httpContextAccessor.HttpContext.Session.Id;
+                    string currentSessionId = httpContextAccessor.HttpContext?.Session.Id;
 
                     // compare session in cache with current session id. if different, then fail.
                     if (!this.OnAuthorize(cacheSessionId, currentSessionId))

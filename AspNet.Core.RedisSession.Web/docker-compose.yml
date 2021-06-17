@@ -3,7 +3,7 @@ version: "3"
 services:
   postgres-docker:
     image: postgres
-    container_name: DockerPostgres
+    container_name: RedisSessionPostgres
     volumes:
       - ${POSTGRES_HOST_DIR}:/var/lib/postgresql/data
     ports:
@@ -15,7 +15,7 @@ services:
 
   redis-docker:
     image: redis
-    container_name: DockerRedis
+    container_name: RedisSessionRedis
     command: redis-server --requirepass "${REDIS_PASSWORD}"
     ports:
       - "${REDIS_PORT}:6379"

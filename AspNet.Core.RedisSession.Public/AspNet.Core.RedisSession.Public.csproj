@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
+        <LangVersion>9</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="PowerHelper.Core" Version="2.2.2" />
+      <PackageReference Include="PowerHelper.Core" Version="5.0.0" />
     </ItemGroup>
 
 </Project>

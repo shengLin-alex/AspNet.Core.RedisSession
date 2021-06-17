@@ -9,10 +9,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Power.Mvc.Helper;
 using Power.Mvc.Helper.Extensions;
 using StackExchange.Profiling.SqlFormatters;
@@ -30,7 +30,7 @@ namespace AspNet.Core.RedisSession.Web
         /// <summary>
         /// Autofac DI 容器
         /// </summary>
-        private IContainer ApplicationContainer { get; set; }
+        private ILifetimeScope ApplicationContainer { get; set; }
 
         private IConfiguration Configuration { get; }
 
@@ -39,8 +39,17 @@ namespace AspNet.Core.RedisSession.Web
         /// </summary>
         /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
         /// <returns>IServiceProvider</returns>
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllersWithViews(option =>
+            {
+                AuthorizationPolicy policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                
+                // set global filter.
+                option.Filters.Add(new AuthorizeFilter(policy));
+                option.Filters.Add(new SessionAuthAttribute());
+            });
+            
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -48,15 +57,6 @@ namespace AspNet.Core.RedisSession.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddMvc(config =>
-            {
-                AuthorizationPolicy policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                
-                // set global filter.
-                config.Filters.Add(new AuthorizeFilter(policy));
-                config.Filters.Add(new SessionAuthAttribute());
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            
             // Cookie based Auth setting
             double loginExpireMinute = this.Configuration.GetValue<double>("LoginExpireMinute");
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -66,6 +66,8 @@ namespace AspNet.Core.RedisSession.Web
                         opt.LogoutPath = new PathString("/Auth/Logout");
                         opt.ExpireTimeSpan = TimeSpan.FromMinutes(loginExpireMinute);
                     });
+
+            services.AddAuthorization();
 
             // session setting
             services.AddDistributedMemoryCache();
@@ -87,24 +89,22 @@ namespace AspNet.Core.RedisSession.Web
                     options.SqlFormatter = new InlineFormatter();
                 })
                 .AddEntityFramework();
+        }
 
-            ContainerBuilder builder = new ContainerBuilder();
-
-            // 將 services 容器內已有的類型註冊資訊倒入 autofac 容器
-            builder.Populate(services);
-
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
             // 取得排序後的 TypeRegister
             IOrderedEnumerable<ITypeRegister> registrars
                 = Assembly.GetExecutingAssembly()
-                          .GetReferencedAssemblies()
-                          .Select(Assembly.Load)
-                          .Concat(new Assembly[]
-                           {
-                               // 此處載入 Web 專案未引用到之專案
-                           })
-                          .SelectMany(p => p.ExportedTypes.Where(s => s.IsAssignableTo<ITypeRegister>() && !s.IsInterface))
-                          .Select(p => (ITypeRegister)Activator.CreateInstance(p))
-                          .OrderBy(p => p.Seq);
+                    .GetReferencedAssemblies()
+                    .Select(Assembly.Load)
+                    .Concat(new Assembly[]
+                    {
+                        // 此處載入 Web 專案未引用到之專案
+                    })
+                    .SelectMany(p => p.ExportedTypes.Where(s => s.IsAssignableTo<ITypeRegister>() && !s.IsInterface))
+                    .Select(p => (ITypeRegister)Activator.CreateInstance(p))
+                    .OrderBy(p => p.Seq);
 
             // 個別進行註冊
             foreach (ITypeRegister registrar in registrars)
@@ -117,15 +117,6 @@ namespace AspNet.Core.RedisSession.Web
 
             // 記錄非預期註冊的型別
             builder.DumpUnexpectRegistration();
-
-            IContainer container = builder.Build();
-
-            this.ApplicationContainer = container;
-
-            // 設定套件相依性解析
-            PackageDiResolver.Current.SetAutofacContainer(this.ApplicationContainer);
-
-            return new AutofacServiceProvider(this.ApplicationContainer);
         }
 
         /// <summary>
@@ -134,8 +125,11 @@ namespace AspNet.Core.RedisSession.Web
         /// <param name="app">Defines a class that provides the mechanisms to configure an application's request pipeline.</param>
         /// <param name="env">Provides information about the web hosting environment an application is running in.</param>
         /// <param name="appLifetime">Allows consumers to perform cleanup during a graceful shutdown.</param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime appLifetime)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime appLifetime)
         {
+            this.ApplicationContainer = app.ApplicationServices.GetAutofacRoot();
+            PackageDiResolver.Current.SetAutofacContainer(this.ApplicationContainer);
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -146,19 +140,20 @@ namespace AspNet.Core.RedisSession.Web
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseCookiePolicy();
-            app.UseMiniProfiler();
-            app.UseAuthentication();
-            app.UseSession();
-
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseMiniProfiler()
+                .UseHttpsRedirection()
+                .UseStaticFiles()
+                .UseCookiePolicy()
+                .UseSession()
+                .UseRouting()
+                .UseAuthentication()
+                .UseAuthorization()
+                .UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllerRoute(
+                        name: "default",
+                        pattern: "{controller=Home}/{action=Index}/{id?}");
+                });
 
             // If you want to dispose of resources that have been resolved in the
             // application container, register for the "ApplicationStopped" event.

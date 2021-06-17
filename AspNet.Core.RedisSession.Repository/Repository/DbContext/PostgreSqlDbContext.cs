@@ -39,7 +39,7 @@ namespace AspNet.Core.RedisSession.Repository
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configure default schema
-            modelBuilder.HasDefaultSchema("dotnetcore");
+            modelBuilder.HasDefaultSchema("public");
             base.OnModelCreating(modelBuilder);
         }
     }

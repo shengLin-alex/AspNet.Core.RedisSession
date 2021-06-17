@@ -9,7 +9,7 @@ namespace AspNet.Core.RedisSession.Web.Controllers
     /// <summary>
     /// Test controller for test api
     /// </summary>
-    [AllowAnonymous]
+    [AllowAnonymous] // not work here, cause UseEndpoint
     [Route("api/[controller]")]
     public class TestController : Controller
     {
